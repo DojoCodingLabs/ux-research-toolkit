@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "ux-research-toolkit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Guided UX research map creation — experience maps, customer journey maps, service blueprints, storyboards, and user story maps. Helps non-experts create professional UX artifacts through dialogue, JSON data, and interactive HTML visualization.",
   "owner": {
     "name": "Luis Andres Pena Castillo",
@@ -11,7 +11,7 @@
     {
       "name": "ux-research-toolkit",
       "description": "Guided UX research toolkit: 6 skills (1 guided entry point + 5 map-type shortcuts), 2 agents (HTML renderer + persona builder), 5 map types (Experience Map, Customer Journey Map, Service Blueprint, Storyboard, User Story Map). JSON-first with modular schemas, composable HTML components, and inline editor via File System Access API. Imports personas from SRD and business-model-toolkit. Based on NN/g methodology.",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "author": {
         "name": "Luis Andres Pena Castillo",
         "email": "lapc506@users.noreply.github.com"
