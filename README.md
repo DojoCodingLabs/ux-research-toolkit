@@ -13,6 +13,9 @@ Guia a usuarios sin experiencia en UX a traves de la creacion de mapas de experi
 | `map-workshop` | Entry point principal — guia desde cero para crear cualquier tipo de mapa |
 | `experience-map` | Atajo directo para Experience Maps (Day in the Life) |
 | `customer-journey-map` | Atajo directo para Customer Journey Maps |
+| `service-blueprint` | Atajo directo para Service Blueprints (procesos internos) |
+| `storyboard` | Atajo directo para Storyboards (narrativa visual) |
+| `user-story-map` | Atajo directo para User Story Maps (planificacion agil) |
 
 ## Agents
 
@@ -21,10 +24,15 @@ Guia a usuarios sin experiencia en UX a traves de la creacion de mapas de experi
 | `renderer` | Compone HTML interactivo desde JSON + componentes |
 | `persona-builder` | Construye/importa user personas desde SRD, BMT, o dialogo |
 
-## Tipos de Mapa (v1)
+## Tipos de Mapa
 
-- **Experience Map** (Day in the Life) — experiencia general del usuario, sin producto especifico
-- **Customer Journey Map** — experiencia con un producto/servicio especifico
+| Tipo | Complejidad | Descripcion |
+|------|-------------|-------------|
+| **Storyboard** | Baja | Narrativa visual emotiva en escenas secuenciales |
+| **Experience Map** | Media | Experiencia general del usuario (Day in the Life) |
+| **Customer Journey Map** | Media | Experiencia con un producto/servicio especifico |
+| **User Story Map** | Media | Planificacion agil con historias de usuario |
+| **Service Blueprint** | Alta | Procesos internos (frontstage/backstage) detras del journey |
 
 ## Arquitectura
 

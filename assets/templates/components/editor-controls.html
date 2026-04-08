@@ -20,7 +20,14 @@
      meta:    { type, profile, title, created, updated, version },
      persona: { name, age, role, location, avatar_emoji, primary_pain, context },
      phases:  [{ id, label, icon, emotion, actions, thoughts, frustrations,
-                 opportunities, touchpoints, channels }],
+                 opportunities, touchpoints, channels,
+                 // v2 — backstage layer (service-blueprint)
+                 frontstage_actions, backstage_actions, support_processes,
+                 physical_evidence, line_of_visibility,
+                 // v2 — scenes layer (storyboard)
+                 scene_description, scene_setting, scene_dialogue, scene_mood,
+                 // v2 — stories layer (user-story-map)
+                 user_story, acceptance_criteria, priority, release, effort_estimate }],
      analysis:{ pain_points: [], moments_of_truth: [] }
    }
 ────────────────────────────────────────────────────────────────── */
@@ -119,6 +126,44 @@ function uxrtBuildJson() {
         p.touchpoints = text.split(',').map(s => s.trim()).filter(Boolean);
       } else if (field === 'channels') {
         p.channels = text.split(',').map(s => s.trim()).filter(Boolean);
+
+      // ── v2: backstage layer (service-blueprint) ──────────────
+      } else if (field === 'frontstage_actions') {
+        p.frontstage_actions = text;
+      } else if (field === 'backstage_actions') {
+        p.backstage_actions = text;
+      } else if (field === 'support_processes') {
+        p.support_processes = text;
+      } else if (field === 'physical_evidence') {
+        p.physical_evidence = text;
+      } else if (field === 'line_of_visibility') {
+        // line_of_visibility is stored in data-value on the badge, not innerText
+        // (handled separately below via querySelectorAll on the badge element)
+
+      // ── v2: scenes layer (storyboard) ────────────────────────
+      } else if (field === 'scene_description') {
+        p.scene_description = text;
+      } else if (field === 'scene_setting') {
+        p.scene_setting = text;
+      } else if (field === 'scene_dialogue') {
+        p.scene_dialogue = text;
+      } else if (field === 'scene_mood') {
+        p.scene_mood = text;
+
+      // ── v2: stories layer (user-story-map) ───────────────────
+      } else if (field === 'user_story') {
+        p.user_story = text;
+      } else if (field === 'acceptance_criteria') {
+        // Split multi-line textarea into array; filter blank lines
+        p.acceptance_criteria = text.split('\n').map(s => s.trim()).filter(Boolean);
+      } else if (field === 'release') {
+        p.release = text;
+      } else if (field === 'priority') {
+        // priority is stored in data-priority on the badge, not innerText
+        // (handled separately below via querySelectorAll on the badge element)
+      } else if (field === 'effort_estimate') {
+        // effort_estimate is stored in data-effort on the badge, not innerText
+        // (handled separately below via querySelectorAll on the badge element)
       }
     } else if (field.startsWith('persona.')) {
       const key = field.slice('persona.'.length);
@@ -151,6 +196,36 @@ function uxrtBuildJson() {
     if (phase && phasesMap[phase]) {
       if (!phasesMap[phase].emotion) phasesMap[phase].emotion = {};
       phasesMap[phase].emotion.level = parseInt(el.dataset.level, 10) || 3;
+    }
+  });
+
+  // ── v2: collect badge data-attributes (not innerText) ─────────
+
+  // line_of_visibility from swimlanes badge
+  document.querySelectorAll('[data-field="line_of_visibility"]').forEach(el => {
+    const phase = el.dataset.phase;
+    if (phase) {
+      if (!phasesMap[phase]) phasesMap[phase] = { id: phase };
+      phasesMap[phase].line_of_visibility = el.dataset.value || 'visible';
+    }
+  });
+
+  // priority from story-cards badge
+  document.querySelectorAll('[data-field="priority"]').forEach(el => {
+    const phase = el.dataset.phase;
+    if (phase) {
+      if (!phasesMap[phase]) phasesMap[phase] = { id: phase };
+      phasesMap[phase].priority = el.dataset.priority || 'must-have';
+    }
+  });
+
+  // effort_estimate from story-cards badge
+  document.querySelectorAll('[data-field="effort_estimate"]').forEach(el => {
+    const phase = el.dataset.phase;
+    if (phase) {
+      if (!phasesMap[phase]) phasesMap[phase] = { id: phase };
+      const effort = el.dataset.effort;
+      if (effort) phasesMap[phase].effort_estimate = effort;
     }
   });
 
@@ -325,6 +400,43 @@ function uxrtApplyJson(data) {
       }
       if (Array.isArray(phase.channels)) {
         set('channels', pid, phase.channels.join(', '));
+      }
+
+      // ── v2: backstage layer (service-blueprint) ──────────────
+      set('frontstage_actions', pid, phase.frontstage_actions);
+      set('backstage_actions', pid, phase.backstage_actions);
+      set('support_processes', pid, phase.support_processes);
+      set('physical_evidence', pid, phase.physical_evidence);
+      if (phase.line_of_visibility) {
+        document.querySelectorAll(`[data-field="line_of_visibility"][data-phase="${CSS.escape(pid)}"]`).forEach(el => {
+          el.dataset.value = phase.line_of_visibility;
+          el.textContent = phase.line_of_visibility;
+        });
+      }
+
+      // ── v2: scenes layer (storyboard) ────────────────────────
+      set('scene_description', pid, phase.scene_description);
+      set('scene_setting', pid, phase.scene_setting);
+      set('scene_dialogue', pid, phase.scene_dialogue);
+      set('scene_mood', pid, phase.scene_mood);
+
+      // ── v2: stories layer (user-story-map) ───────────────────
+      set('user_story', pid, phase.user_story);
+      if (Array.isArray(phase.acceptance_criteria)) {
+        set('acceptance_criteria', pid, phase.acceptance_criteria.join('\n'));
+      }
+      set('release', pid, phase.release);
+      if (phase.priority) {
+        document.querySelectorAll(`[data-field="priority"][data-phase="${CSS.escape(pid)}"]`).forEach(el => {
+          el.dataset.priority = phase.priority;
+          el.textContent = phase.priority;
+        });
+      }
+      if (phase.effort_estimate) {
+        document.querySelectorAll(`[data-field="effort_estimate"][data-phase="${CSS.escape(pid)}"]`).forEach(el => {
+          el.dataset.effort = phase.effort_estimate;
+          el.textContent = phase.effort_estimate;
+        });
       }
     });
   }

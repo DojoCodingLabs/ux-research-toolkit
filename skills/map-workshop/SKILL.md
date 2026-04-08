@@ -105,41 +105,60 @@ Hacer estas preguntas en orden (desde la perspectiva del usuario final, NO del f
 **Pregunta 1**: "Tu usuario final o cliente ya cuenta con algun producto/servicio
 existente para atender su problema/necesidad?"
 
-- **No** -> Seleccionar Mapa de Experiencia (Experience Map) tipo "Un Dia en la Vida".
-  Explicar:
+- **No** -> Continuar a pregunta 1b.
+
+- **Si** -> Continuar a pregunta 2.
+
+**Pregunta 1b**: "Queres contar la historia emotiva de tu usuario en escenas
+(como un comic o guion visual), o preferes mapear su dia completo y contexto de vida?"
+
+- **Historia emotiva en escenas** -> Seleccionar Guion Visual (Storyboard). Explicar:
+
+  > "Vamos a crear un **Guion Visual (Storyboard)**.
+  > Este mapa narra la experiencia del usuario a traves de escenas secuenciales,
+  > ideal para comunicar empatia, presentar casos de uso o documentar una experiencia
+  > clave de forma visual y emotiva."
+
+- **Dia completo / contexto de vida** -> Seleccionar Mapa de Experiencia (Experience Map). Explicar:
 
   > "Vamos a crear un **Mapa de Experiencia (Experience Map)** tipo 'Un Dia en la Vida'.
   > Este mapa captura la experiencia general de tu usuario a lo largo de un dia tipico,
   > sin enfocarse en un producto especifico. Es ideal para entender el contexto de vida
   > y descubrir necesidades no atendidas."
 
-- **Si** -> Continuar a pregunta 2.
-
 **Pregunta 2**: "Es un producto/servicio digital?"
 
 Registrar la respuesta como contexto (afecta los tipos de puntos de contacto despues).
 
-**Pregunta 3**: "Queres entender como tu usuario usa ese producto/servicio especifico?"
+**Pregunta 3**: "Queres entender como tu usuario vive el viaje con ese producto/servicio,
+o necesitas planificar las historias de desarrollo (user stories) del equipo tecnico?"
 
-- **Si** -> Seleccionar Mapa del Viaje del Cliente (Customer Journey Map). Explicar:
+- **Viaje del cliente** -> Continuar a pregunta 4.
+
+- **Planificar desarrollo** -> Seleccionar Mapa de Historias de Usuario (User Story Map). Explicar:
+
+  > "Vamos a crear un **Mapa de Historias de Usuario (User Story Map)**.
+  > Este mapa descompone las actividades del usuario en historias de desarrollo
+  > con criterios de aceptacion, prioridad y estimaciones. Ideal para planificar
+  > sprints y construir el backlog."
+
+**Pregunta 4**: "Necesitas ver solo la experiencia visible del cliente, o tambien los
+procesos internos que ocurren detras de escena para entregar ese servicio?"
+
+- **Solo experiencia visible** -> Seleccionar Mapa del Viaje del Cliente (Customer Journey Map). Explicar:
 
   > "Vamos a crear un **Mapa del Viaje del Cliente (Customer Journey Map)**.
   > Este mapa rastrea la experiencia de tu usuario con tu producto/servicio especifico,
   > desde que lo descubre hasta que lo usa regularmente. Es ideal para encontrar
   > puntos de friccion y mejorar la experiencia."
 
-- **No** -> Preguntar: "Necesitas ver los procesos internos de como se entrega ese servicio?"
+- **Tambien procesos internos** -> Seleccionar Plano de Servicio (Service Blueprint). Explicar:
 
-  - **Si** -> Explicar:
-
-    > "El **Plano de Servicio (Service Blueprint)** seria ideal para eso, pero esta
-    > disponible en la v2 del plugin. Por ahora, te recomiendo empezar con un
-    > Mapa del Viaje del Cliente (Customer Journey Map) que ya cubre la experiencia
-    > visible del usuario."
-
-    Seleccionar Customer Journey Map.
-
-  - **No** -> Seleccionar Mapa de Experiencia (Experience Map) por defecto.
+  > "Vamos a crear un **Plano de Servicio (Service Blueprint)**.
+  > Este mapa va mas alla del viaje del cliente: captura tanto lo que el cliente
+  > ve y experimenta (frontstage) como los procesos internos que lo hacen posible
+  > (backstage), separados por la linea de visibilidad (line of visibility).
+  > Ideal para identificar cuellos de botella operativos y mejorar la entrega del servicio."
 
 Presentar el tipo de mapa seleccionado y pedir aprobacion:
 
@@ -234,6 +253,149 @@ Para cada fase, hacer las mismas 6 preguntas del Mapa de Experiencia, MAS:
 Despues de completar todas las fases, hacer las mismas preguntas de analisis
 (pain points y momentos de verdad).
 
+### Para Plano de Servicio (Service Blueprint)
+
+Primero preguntar: "Cual es el producto o servicio especifico que vamos a mapear en este plano?"
+Registrar como `product_context`.
+
+Leer las fases por defecto desde
+`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/service-blueprint.profile.json`.
+
+Presentar las etapas predeterminadas:
+
+> "Voy a mapear el plano de servicio de **[product_context]** en 6 etapas.
+> Queres usar estas o personalizarlas?
+>
+> 1. Descubrimiento (Awareness)
+> 2. Consideracion (Consideration)
+> 3. Adquisicion (Acquisition)
+> 4. Entrega del servicio (Service Delivery)
+> 5. Post-servicio (Post-service)
+> 6. Retencion (Retention)
+>
+> (Responde 'Si' para usar estas, o describi tus etapas personalizadas)"
+
+Para cada fase, hacer las mismas 6 preguntas base del Customer Journey Map, MAS:
+
+7. "Que acciones visibles realiza el personal o sistema frente al cliente en esta etapa?
+   (lo que el cliente SI ve o experimenta directamente)"
+   -> `frontstage_actions`
+
+8. "Que sucede detras de escena que el cliente NO ve?
+   (procesos internos, coordinacion entre equipos, tareas administrativas)"
+   -> `backstage_actions`
+
+9. "Que sistemas, bases de datos o herramientas soportan esta etapa?
+   (ej: CRM, sistema de pagos, base de datos de inventario, plataforma de turnos)"
+   -> `support_processes`
+
+10. "Que evidencia fisica o tangible recibe el cliente en esta etapa?
+    (ej: ticket, confirmacion por email, factura, producto fisico, notificacion push)"
+    -> `physical_evidence`
+
+11. "Que tan visible es este proceso para el cliente?
+    1. Visible -- el cliente lo ve directamente
+    2. Parcialmente visible -- el cliente siente el efecto pero no el proceso
+    3. Oculto -- el cliente no tiene conocimiento de este proceso"
+    -> `line_of_visibility`
+
+Despues de completar todas las fases, hacer las mismas preguntas de analisis
+(pain points y momentos de verdad).
+
+### Para Guion Visual (Storyboard)
+
+Leer las escenas por defecto desde
+`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/storyboard.profile.json`.
+
+Primero preguntar sobre la cantidad de escenas:
+
+> "Cuantas escenas queres en el guion?
+>
+> Por defecto uso 6 escenas que cubren el arco completo de problema a solucion:
+> 1. Contexto -- la situacion inicial
+> 2. Problema -- el conflicto o dolor
+> 3. Busqueda -- el usuario busca una solucion
+> 4. Descubrimiento -- encuentra algo prometedor
+> 5. Solucion -- lo usa y funciona
+> 6. Resultado -- el estado final mejorado
+>
+> Responde 'Si' para usar estas 6, o indica cuantas escenas necesitas"
+
+Para cada escena (una a la vez), hacer estas preguntas en orden:
+
+1. "Que esta pasando en la escena **[N] -- [titulo]**? Describe la situacion."
+   -> `scene_description`
+
+2. "Donde y cuando ocurre esta escena?"
+   -> `scene_setting`
+
+3. "Hay algun dialogo o pensamiento clave? (opcional)"
+   -> `scene_dialogue`
+
+4. "Cual es el estado de animo general en esta escena?"
+   -> `scene_mood`
+
+5. "Del 1 al 5, como se siente **[nombre]** en esta escena? (1=muy mal, 5=muy bien)"
+   -> `emotion.level`
+   Sugerir emoji y etiqueta emocional. -> `emotion.emoji`, `emotion.label`
+
+Despues de todas las escenas, preguntar:
+
+6. "En una frase, cual es el mensaje central que queres que el espectador recuerde?"
+   -> `analysis.moments_of_truth[0].description`
+
+### Para Mapa de Historias de Usuario (User Story Map)
+
+Primero preguntar: "Cual es el producto o funcionalidad especifica que vamos a descomponer en historias?"
+Registrar como `product_context`.
+
+Leer las actividades por defecto desde
+`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/user-story-map.profile.json`.
+
+Presentar las actividades predeterminadas:
+
+> "Voy a organizar las historias de **[product_context]** en 6 actividades principales.
+> Queres usar estas o personalizarlas?
+>
+> 1. Descubrir (Discover)
+> 2. Evaluar (Evaluate)
+> 3. Adquirir (Acquire)
+> 4. Configurar (Setup)
+> 5. Uso principal (Core Use)
+> 6. Extender (Extend)
+>
+> (Responde 'Si' para usar estas, o describi tus propias actividades)"
+
+Para cada actividad (una a la vez), hacer estas preguntas en orden:
+
+1. "Que hace **[nombre]** en la actividad de **[actividad]** con **[product_context]**?"
+   -> `actions`
+
+2. "Cual es la historia de usuario (user story)?
+   Formato: 'Como [persona], quiero [meta], para [beneficio]'"
+   -> `user_story`
+
+3. "Cuales son los criterios de aceptacion (acceptance criteria)? (uno por linea)"
+   -> `acceptance_criteria`
+
+4. "Que prioridad tiene esta historia?
+   1. Must-have  2. Should-have  3. Could-have  4. Won't-have"
+   -> `priority`
+
+5. "Para que release o sprint? (opcional)"
+   -> `release`
+
+6. "Estimacion de esfuerzo? XS / S / M / L / XL (opcional)"
+   -> `effort_estimate`
+
+Despues de todas las actividades:
+
+7. "Cuales son los 3-4 riesgos o dependencias principales que identificas?"
+   -> `analysis.pain_points`
+
+8. "Cual es la historia mas critica que si falla bloquea el resto?"
+   -> `analysis.moments_of_truth[0]`
+
 **PUERTA DE APROBACION**: Confirmar que todos los datos de todas las fases estan
 completos antes de continuar.
 
@@ -249,9 +411,9 @@ Construir el objeto JSON conforme al esquema core + capas activas:
 ```json
 {
   "meta": {
-    "type": "[experience-map | journey-map]",
-    "profile": "[experience-map | journey-map]",
-    "variant": "[day-in-the-life | null]",
+    "type": "[experience-map | journey-map | service-blueprint | storyboard | user-story-map]",
+    "profile": "[experience-map | journey-map | service-blueprint | storyboard | user-story-map]",
+    "variant": "[day-in-the-life | narrative | null]",
     "title": "[titulo descriptivo del mapa]",
     "created": "YYYY-MM-DD",
     "updated": "YYYY-MM-DD",
@@ -446,3 +608,6 @@ Resumen de todas las puertas del flujo:
 - **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/core.schema.json`** -- Esquema core del JSON
 - **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/experience-map.profile.json`** -- Perfil de Mapa de Experiencia
 - **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/journey-map.profile.json`** -- Perfil de Customer Journey Map
+- **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/service-blueprint.profile.json`** -- Perfil de Plano de Servicio
+- **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/storyboard.profile.json`** -- Perfil de Guion Visual
+- **`${CLAUDE_PLUGIN_ROOT}/assets/schemas/profiles/user-story-map.profile.json`** -- Perfil de Mapa de Historias de Usuario

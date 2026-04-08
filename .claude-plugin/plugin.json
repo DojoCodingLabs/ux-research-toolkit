@@ -1,7 +1,7 @@
 {
   "name": "ux-research-toolkit",
-  "version": "1.0.0",
-  "description": "Guided UX research map creation — experience maps, customer journey maps, and more. Helps non-experts create professional UX artifacts through dialogue, JSON data, and interactive HTML visualization.",
+  "version": "2.0.0",
+  "description": "Guided UX research map creation — experience maps, customer journey maps, service blueprints, storyboards, and user story maps. Helps non-experts create professional UX artifacts through dialogue, JSON data, and interactive HTML visualization.",
   "author": {
     "name": "Luis Andres Pena Castillo",
     "url": "https://github.com/DojoCodingLabs"
@@ -19,6 +19,10 @@
     "user-experience",
     "design-thinking",
     "service-design",
-    "user-persona"
+    "service-blueprint",
+    "storyboard",
+    "user-story-map",
+    "user-persona",
+    "agile-planning"
   ]
 }
