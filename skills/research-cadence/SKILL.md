@@ -109,7 +109,7 @@ La primera vez que el usuario activa esta skill, generar el **documento maestro*
 
 ## Configuración
 
-- **Testing Day**: [día elegido], 09:00-12:00
+- **Testing Day**: [día elegido], 08:30-12:00 (3 sesiones × 1h con 15min buffer; TODAS terminan ≤ 12:00 noon per regla 3-12-1)
 - **Equipo**:
   - Moderador(es): [nombres]
   - Notetaker(s): [nombres]
@@ -208,10 +208,10 @@ Generar `./docs/ux-research/weekly-logs/YYYY-WW/plan.md`:
 - [ ] Finalizar test script
 - [ ] Team review rápido del artefacto (todos alineados con qué se va a mostrar)
 
-### Jueves — TESTING DAY
-- [ ] 09:00-10:00 — Sesión 1
-- [ ] 10:15-11:15 — Sesión 2
-- [ ] 11:30-12:30 — Sesión 3
+### Jueves — TESTING DAY (TODAS las sesiones terminan ≤ 12:00 noon)
+- [ ] 08:30-09:30 — Sesión 1
+- [ ] 09:45-10:45 — Sesión 2
+- [ ] 11:00-12:00 — Sesión 3
 - [ ] 14:00-16:00 — Debrief del equipo (TODOS los observadores): affinity mapping
   - Leer hallazgos en voz alta
   - Transcribir a cards/sticky notes
