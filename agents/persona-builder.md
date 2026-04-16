@@ -4,7 +4,8 @@ description: >
   Builds or imports user personas for UX research maps. Searches for existing
   persona data from SRD personas.yml, business-model-toolkit's
   perfil-expectativas-cliente.md, or previous map JSONs. Falls back to
-  guided dialogue prompt if no persona found.
+  guided proto-persona CREATE mode (Lean UX 4-quadrant format) if no
+  persona found — rapid persona creation in minutes, not months.
 model: sonnet
 tools:
   - Read
@@ -122,9 +123,53 @@ If multiple map JSONs are found, present a numbered list showing the map title a
 
 ---
 
-### Priority 4 — No Persona Found
+### Priority 4 — Proto-Persona CREATE mode (no persona found)
 
-If none of the above sources yield data, return the `NOT_FOUND` status and include the recommended dialogue template (see Output Format below) so the calling skill can prompt the user directly.
+If none of the above sources yield data, activate **Proto-Persona CREATE mode**.
+
+Based on *Lean UX* (Jeff Gothelf, O'Reilly 2013), cap. 4 — "Assumptions, Hypotheses, and Outcomes":
+
+> Proto-personas are **NOT** traditional research-heavy personas. They are created in hours (not months), starting with assumptions, later validated through research. They are explicitly labeled as hypothesis-level artifacts until confirmed.
+
+**CREATE mode uses the 4-quadrant proto-persona format**:
+
+```
+┌──────────────────────────────┬──────────────────────────────┐
+│  Q1: Sketch + Name           │  Q2: Behavioral Demographics │
+│  (identity, quick visual)    │  (demographics that predict  │
+│                              │   behavior — NOT all demos)  │
+├──────────────────────────────┼──────────────────────────────┤
+│  Q3: Pain Points & Needs     │  Q4: Potential Solutions     │
+│  (current struggles,         │  (what might help — stays    │
+│   unmet needs)               │   hypothetical until tested) │
+└──────────────────────────────┴──────────────────────────────┘
+```
+
+**Key differences vs. traditional personas**:
+
+| Traditional persona | Proto-persona (this mode) |
+|---|---|
+| Months of ethnographic research | Hours of team assumption |
+| Validated before use | Hypothesis until validated |
+| Exhaustive demographic detail | Only demographics that predict behavior |
+| Solution features prescribed | Solutions stay hypothetical |
+| One "canonical" persona per segment | Can iterate multiple proto-personas fast |
+
+**CREATE mode flow**:
+
+1. Briefly explain to the user that this is a proto-persona (hypothesis-level, iterable)
+2. Walk through the 4 quadrants via dialogue (one quadrant at a time, not all at once)
+3. For Q2 (Behavioral Demographics), ask for **demographics that PREDICT BEHAVIOR** — NOT all demographic details. Examples:
+   - Good: "Tech comfort level", "Decision-making authority at work", "Daily schedule constraints"
+   - Avoid: "Favorite color", "Zodiac sign", "Exact income bracket"
+4. For Q3 (Pain Points), elicit 3-5 specific pain points with context
+5. For Q4 (Potential Solutions), **mark each solution explicitly as HYPOTHESIS** — solutions stay tentative until user research validates them
+6. Suggest a contextually appropriate `avatar_emoji` based on role + age + context
+7. Output via `PERSONA` block (same structure as FOUND_* cases) with `_hypothesis_flag: true` to signal this is a proto-persona
+
+**Narrow to 3-4 proto-personas max per segment**. If the user wants more, push back — a project with 6+ personas lacks focus. Differentiate by **needs and roles**, not demographics.
+
+**Output signal for CREATE mode**: `STATUS: CREATE_PROTO_PERSONA` (new status, distinct from `NOT_FOUND`).
 
 ---
 
@@ -133,7 +178,7 @@ If none of the above sources yield data, return the `NOT_FOUND` status and inclu
 Return your findings using this exact structure as plain text:
 
 ```
-STATUS: FOUND_SRD | FOUND_BMT | FOUND_MAP | NOT_FOUND
+STATUS: FOUND_SRD | FOUND_BMT | FOUND_MAP | CREATE_PROTO_PERSONA | NOT_FOUND
 SOURCE: [absolute file path, or "none"]
 PERSONA:
   name: ...
@@ -143,6 +188,7 @@ PERSONA:
   avatar_emoji: ... (suggest an appropriate emoji based on role and age — e.g. 👩‍💼 for a senior professional, 👨‍💻 for a developer)
   primary_pain: ...
   context: ...
+  _hypothesis_flag: true | false (true ONLY for CREATE_PROTO_PERSONA — marks this as a proto-persona to validate)
 BONUS_DATA:
   lifecycle:       (include only if sourced from SRD and lifecycle field exists)
     - phase: "Day 1"
@@ -152,7 +198,29 @@ BONUS_DATA:
     - "..."
   pain_points:     (full list beyond primary — include if sourced from SRD or BMT)
     - "..."
-DIALOGUE_TEMPLATE: (include only when STATUS is NOT_FOUND)
+  behavioral_demographics: (include only for CREATE_PROTO_PERSONA — demographics that predict behavior)
+    - "..."
+  hypothetical_solutions: (include only for CREATE_PROTO_PERSONA — marked as hypothesis until validated)
+    - "..."
+PROTO_PERSONA_DIALOGUE: (include only when STATUS is CREATE_PROTO_PERSONA)
+  quadrant_1_identity:
+    - "What is the user's name (can be fictional)?"
+    - "How old are they? What's their occupation title?"
+    - "Where are they located?"
+    - "One-sentence visual description (what would their avatar look like?)"
+  quadrant_2_behavioral_demographics:
+    - "What demographics about them PREDICT their behavior? (Only include demos that influence decisions — skip irrelevant ones.)"
+    - "What's their comfort level with technology / change / risk?"
+    - "What's their decision-making context? (Autonomous? Needs approval? Team-based?)"
+    - "What are their daily/weekly schedule constraints?"
+  quadrant_3_pain_points:
+    - "What are 3-5 specific pain points they experience (with context)?"
+    - "What's their #1 unmet need right now?"
+    - "What currently frustrates them about existing solutions?"
+  quadrant_4_potential_solutions:
+    - "What solutions MIGHT help them? (Mark each as HYPOTHESIS — we validate later)"
+    - "Which of these solutions they've already tried that didn't work?"
+DIALOGUE_TEMPLATE: (include only when STATUS is NOT_FOUND — legacy fallback for non-proto-persona cases)
   prompts:
     - "What is the user's name?"
     - "How old are they?"
@@ -162,7 +230,11 @@ DIALOGUE_TEMPLATE: (include only when STATUS is NOT_FOUND)
     - "In one sentence, describe the situation or context in which they encounter this problem."
 ```
 
-If `BONUS_DATA` has no content, omit the section entirely. If `DIALOGUE_TEMPLATE` is not needed, omit that section entirely.
+**Default behavior when no persona is found**: return `STATUS: CREATE_PROTO_PERSONA` with `PROTO_PERSONA_DIALOGUE` — not `NOT_FOUND` with `DIALOGUE_TEMPLATE`. The Lean UX proto-persona is the preferred creation path.
+
+Use `NOT_FOUND` + `DIALOGUE_TEMPLATE` only when the calling skill explicitly requests the legacy minimal format (e.g., for simple storyboard scenes where a proto-persona is overkill).
+
+If `BONUS_DATA` has no content, omit the section entirely. If `PROTO_PERSONA_DIALOGUE` / `DIALOGUE_TEMPLATE` is not needed, omit that section entirely.
 
 ## Behavior Rules
 

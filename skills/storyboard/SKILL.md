@@ -55,7 +55,21 @@ Evaluar el resultado:
 
   Si hay multiples personas de SRD: presentar lista numerada, dejar que el usuario elija.
 
-- **NOT_FOUND**: Ejecutar dialogo de creacion de persona. Preguntar una a la vez:
+- **CREATE_PROTO_PERSONA** (default Lean UX 4-quadrant flow cuando no hay persona en SRD/BMT/maps): Ejecutar el `PROTO_PERSONA_DIALOGUE` del agent en 4 cuadrantes (una pregunta a la vez):
+
+  **Cuadrante 1 — Identity**: nombre (puede ser ficticio), edad, ocupación, ubicación, descripción visual del avatar en 1 oración.
+
+  **Cuadrante 2 — Behavioral demographics** (solo demographics que PREDICEN behavior): tech-savviness, tolerancia al riesgo, contexto de decision-making (autónomo / needs approval / team-based), schedule constraints.
+
+  **Cuadrante 3 — Pain points**: 3-5 pain points específicos con contexto, #1 unmet need actual, frustrations con soluciones existentes.
+
+  **Cuadrante 4 — Potential solutions** (HIPÓTESIS a validar): qué soluciones PODRÍAN ayudar, cuáles ya probó y no funcionaron.
+
+  El proto-persona resultante lleva `_hypothesis_flag: true`. Usarlo para el mapa actual, flaggeando que requiere validación con entrevistas reales (ver `business-model-toolkit:customer-interview-system`).
+
+  Para storyboards específicamente, si el scope del scene es simple (4-6 frames), se puede usar `NOT_FOUND` + `DIALOGUE_TEMPLATE` en su lugar (proto-persona puede ser overkill para storyboards cortos).
+
+- **NOT_FOUND** (legacy fallback — o para storyboards simples): Ejecutar dialogo mínimo de creacion de persona. Preguntar una a la vez:
 
   1. "Como se llama tu usuario/a? Que edad tiene?"
   2. "Cual es su rol o profesion?"
