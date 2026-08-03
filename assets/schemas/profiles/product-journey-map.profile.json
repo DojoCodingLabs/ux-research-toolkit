@@ -57,7 +57,7 @@
       "auth": "JOURNEY_CAPTURE_SESSION_AUTH",
       "ent": "JOURNEY_CAPTURE_SESSION_ENT",
       "ver": "JOURNEY_CAPTURE_SESSION_VER",
-      "crm": "JOURNEY_CAPTURE_SESSION_CRM",
+      "scoped": "JOURNEY_CAPTURE_SESSION_SCOPED",
       "admin": "JOURNEY_CAPTURE_SESSION_ADMIN"
     },
     "on_missing_session": "skip",

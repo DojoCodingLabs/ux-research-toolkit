@@ -60,14 +60,14 @@
         },
         "access": {
           "type": "string",
-          "description": "The precondition a visitor must already satisfy to reach this screen. The capturer uses it to pick a session, and a derived test uses it to generate the authorization failure mode: for anything above `pub`, the first scenario is that a visitor WITHOUT it does not get there.\n\nOrdered from least to most restrictive. The four in the middle are not decoration: collapsing them into `auth`/`admin` makes the capturer bring the wrong session, get a 403, and record a reachable screen as unreachable.\n\n  pub    no session\n  aware  reachable anonymously, personalised when signed in\n  auth   any signed-in account\n  ent    a purchased entitlement (an organization plan, a tier)\n  ver    a verified or eligible state (accepted terms, joined the event)\n  crm    a scoped permission beyond plain admin\n  admin  staff\n\nMEASURED, not designed: this vocabulary was extracted from a real 195-screen map. The first draft of this schema had only four values, built from a sample of one lane, and the validator rejected 13 screens on the full map. That rejection is why the list is seven.",
+          "description": "The precondition a visitor must already satisfy to reach this screen. The capturer uses it to pick a session, and a derived test uses it to generate the authorization failure mode: for anything above `pub`, the first scenario is that a visitor WITHOUT it does not get there.\n\nOrdered from least to most restrictive. The four in the middle are not decoration: collapsing them into `auth`/`admin` makes the capturer bring the wrong session, get a 403, and record a reachable screen as unreachable.\n\n  pub    no session\n  aware  reachable anonymously, personalised when signed in\n  auth   any signed-in account\n  ent    a purchased entitlement (an organization plan, a tier)\n  ver    a verified or eligible state (accepted terms, joined the event)\n  scoped a specific permission beyond plain admin\n  admin  staff\n\nMEASURED, not designed: this vocabulary was extracted from a real 195-screen map. The first draft of this schema had only four values, built from a sample of one lane, and the validator rejected 13 screens on the full map. That rejection is why the list is seven.",
           "enum": [
             "pub",
             "aware",
             "auth",
             "ent",
             "ver",
-            "crm",
+            "scoped",
             "admin"
           ],
           "examples": [
