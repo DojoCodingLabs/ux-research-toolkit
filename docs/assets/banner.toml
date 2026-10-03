@@ -1,0 +1,16 @@
+name = "UX Research Toolkit"
+tagline = "Mapas de UX research con [diálogo guiado]"
+chips = ["5 tipos de mapa"]
+meta = "Código disponible · Claude Code"
+tile = "/"
+alt = "UX Research Toolkit por Dojo Coding: Mapas de UX research con diálogo guiado"
+
+[card]
+kind = "ledger"
+label = "Toolkit"
+status = "v2.3.0 · BSL-1.1"
+rows = [
+  ["/map-workshop", "Guía desde cero, cualquier mapa", "paso 1"],
+  ["map.json", "Fuente de verdad del mapa", "paso 2"],
+  ["map.html", "Visualización y editor inline", "paso 3"],
+]

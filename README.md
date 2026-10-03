@@ -1,6 +1,22 @@
-# ux-research-toolkit
+<p align="center">
+  <a href="https://dojocoding.io">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="docs/assets/banner-light.svg">
+      <img alt="UX Research Toolkit por Dojo Coding: Mapas de UX research con diálogo guiado" src="docs/assets/banner-light.svg" width="100%">
+    </picture>
+  </a>
+</p>
+
+# UX Research Toolkit
+
+**Mapas de UX research en Claude Code, pensados para quien no tiene experiencia en UX.**
 
 Plugin de Claude Code para crear artefactos de UX research profesionales a traves de dialogo guiado.
+
+[![Licencia BSL-1.1](https://img.shields.io/badge/licencia-BSL--1.1-FF7151?labelColor=201E3D)](LICENSE) [![Versión 2.3.0](https://img.shields.io/badge/versi%C3%B3n-2.3.0-FF7151?labelColor=201E3D)](.claude-plugin/plugin.json) [![Plugin de Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-201E3D?labelColor=201E3D)](#instalacion)
+
+[Empezar](#instalacion) · [Tipos de mapa](#tipos-de-mapa) · [Arquitectura](#arquitectura) · [Reportar un problema](https://github.com/DojoCodingLabs/ux-research-toolkit/issues/new)
 
 ## Que hace
 
@@ -61,3 +77,11 @@ claude plugins install ux-research-toolkit
 
 - Chrome o Edge para editar mapas via File System Access API
 - Opcional: business-model-toolkit o srd-framework para importar personas existentes
+
+## Licencia
+
+[BSL-1.1](LICENSE). Construido por [Dojo Coding](https://dojocoding.io).
+
+<p align="center">
+  <a href="https://dojocoding.io"><img src="docs/assets/dojocoding-mark.png" alt="Dojo Coding" width="48"></a>
+</p>
